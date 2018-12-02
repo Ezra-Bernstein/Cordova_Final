@@ -13,9 +13,18 @@ var text = [];
 const FPS = 30;
 const images = ["yesbaby.png", "pepe.png", "gcat.png",  "cooldoge.png", "arrow.png"];
 const urlParams = new URLSearchParams(window.location.search);
-const myParam = urlParams.get('myParam');
-const topbottom = urlParams.get('topbottom');
-const struct = urlParams.get('struct');
+const topbottom = urlParams.get('topbottom') == "true";
+const struct = urlParams.get('struct') == "true";
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 
 function init() {
   console.log(topbottom);
@@ -32,7 +41,7 @@ function init() {
   document.getElementById("do").style = "background-image: url(" + "https://picsum.photos/" + CANVAS_WIDTH + "/" + CANVAS_HEIGHT + "/?random" + "); overflow:none; background-repeat:no-repeat; ";
 
   if (struct) {
-    if (topbottom) {
+    if (!topbottom) {
       structAtTB();
     } else {
       putStructuredText();
@@ -40,7 +49,7 @@ function init() {
       putStructuredText();
     }
   } else {
-    if (topbottom) {
+    if (!topbottom) {
       randomAtTB();
     } else {
       putRandomText();
@@ -76,7 +85,7 @@ function putRandomText() {
 
 }
 
-function randAtTB() {
+function randomAtTB() {
   var botLX = 5;
   var botLY = 50;
   var factorX = CANVAS_WIDTH - botLX;
